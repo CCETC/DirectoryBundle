@@ -285,11 +285,9 @@ class ListingAdmin extends Admin
             $object->setDateOfExpiration($dateOfExpiration);
         }
         // renew listings (update dateRenewed and expirationDate)
-        //      on update (if config option is set)
-        //      or when manually renewed 
-        if($renewOnUpdate
-                || (($originalStatus == "expired" || $originalStatus == "upForRenewal") && $newStatus == "active")
-            ) {
+        // this just looks to see if the status has changed from expired or upForRenewal to active, meaning that an admin has renewed them... the status is changed in the admin crud controller...
+        // nothing should happen here when a user edit changes the status from "expired" to "upForRenewal" (see EditFormHandler)
+        if(($originalStatus == "expired" || $originalStatus == "upForRenewal") && $newStatus == "active") {
             $today = new \DateTime();
             $interval = new \DateInterval('P'.$listingLifetime.'D');
             $dateOfExpiration = clone $today;
